@@ -14,10 +14,10 @@ async function create (projectName, options) {
 
   const cwd = options.cwd || process.cwd() // 当前目录
   const inCurrent = projectName === '.' // 是否在当前目录，这里就可以看出在当前目录新建工程，只需要输入.
-  const name = inCurrent ? path.relative('../', cwd) : projectName
-  const targetDir = path.resolve(cwd, projectName || '.')
+  const name = inCurrent ? path.relative('../', cwd) : projectName // 项目名称
+  const targetDir = path.resolve(cwd, projectName || '.') // 生成项目的目录
 
-  const result = validateProjectName(name)
+  const result = validateProjectName(name) // 校验项目名称是否符合npm包名规范
   if (!result.validForNewPackages) {
     console.error(chalk.red(`Invalid project name: "${name}"`))
     result.errors && result.errors.forEach(err => {
@@ -26,7 +26,7 @@ async function create (projectName, options) {
     result.warnings && result.warnings.forEach(warn => {
       console.error(chalk.red.dim('Warning: ' + warn))
     })
-    exit(1)
+    exit(1) // 执行失败node进程退出
   }
 
   if (fs.existsSync(targetDir) && !options.merge) {
